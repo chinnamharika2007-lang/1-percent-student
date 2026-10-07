@@ -28,7 +28,15 @@
             <button class="theme-toggle-btn" id="themeToggle" title="Toggle Light/Dark Mode">
                 <span id="themeIcon">☀️</span>
             </button>
-            <a href="#dashboard" class="btn-primary" style="padding: 8px 18px; font-size: 14px;">Today's Goal</a>
+            <div id="authButtons" style="display: flex;">
+                <button class="btn-secondary" id="loginBtn" style="padding: 8px 18px; font-size: 14px; margin-right: 10px;">Login</button>
+                <button class="btn-primary" id="signupBtn" style="padding: 8px 18px; font-size: 14px;">Sign Up</button>
+            </div>
+            <div id="userProfile" style="display: none; align-items: center; gap: 10px;">
+                <span id="welcomeText" style="font-weight: 600;">Welcome, User</span>
+                <button class="btn-secondary" id="logoutBtn" style="padding: 8px 18px; font-size: 14px;">Logout</button>
+            </div>
+            <a href="#dashboard" class="btn-primary" style="padding: 8px 18px; font-size: 14px; margin-left: 10px;">Today's Goal</a>
         </div>
     </header>
 
@@ -239,6 +247,75 @@
                 <button class="btn-primary" id="saveBookmarkBtn" style="width: 100%; justify-content: center; margin-top: 10px;">
                     Save Bookmark
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONNECT PLATFORM MODAL -->
+    <div class="modal" id="connectPlatformModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 id="connectPlatformTitle">Connect Platform</h3>
+                <button class="close-modal-btn" onclick="document.getElementById('connectPlatformModal').classList.remove('open')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="connectPlatformId">
+                <div>
+                    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Username</label>
+                    <input type="text" id="connectUsername" placeholder="e.g. john_doe">
+                </div>
+                <div style="margin-top: 10px;">
+                    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Profile URL</label>
+                    <input type="url" id="connectUrl" placeholder="https://leetcode.com/john_doe">
+                </div>
+                <button class="btn-primary" id="saveConnectBtn" style="width: 100%; justify-content: center; margin-top: 15px;">
+                    Save Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div class="modal" id="authModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 id="authModalTitle">Sign Up</h3>
+                <button class="close-modal-btn" id="closeAuthModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="authForm" onsubmit="event.preventDefault(); submitAuth();">
+                    <div id="fullNameGroup">
+                        <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Full Name</label>
+                        <input type="text" id="authFullName" placeholder="e.g. John Doe">
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Email</label>
+                        <input type="email" id="authEmail" placeholder="student@example.com" required>
+                    </div>
+                    <div style="margin-top: 10px; position: relative;">
+                        <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Password</label>
+                        <input type="password" id="authPassword" placeholder="••••••••" required style="padding-right: 36px;">
+                        <button type="button" class="toggle-password-btn" data-target="authPassword" style="position: absolute; right: 10px; top: 28px; background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0;">👁️</button>
+                    </div>
+                    <div id="confirmPasswordGroup" style="margin-top: 10px; position: relative;">
+                        <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Confirm Password</label>
+                        <input type="password" id="authConfirmPassword" placeholder="••••••••" style="padding-right: 36px;">
+                        <button type="button" class="toggle-password-btn" data-target="authConfirmPassword" style="position: absolute; right: 10px; top: 28px; background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0;">👁️</button>
+                    </div>
+                    
+                    <div id="forgotPasswordGroup" style="margin-top: 10px; display: none; text-align: right;">
+                        <a href="#" style="font-size: 12px; color: var(--primary);">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="authSubmitBtn" style="width: 100%; justify-content: center; margin-top: 20px;">
+                        Create Account
+                    </button>
+                    
+                    <div style="margin-top: 15px; text-align: center; font-size: 13px;">
+                        <span id="authToggleText">Already have an account?</span> 
+                        <a href="#" id="authToggleLink" style="color: var(--primary); font-weight: 600;">Login</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

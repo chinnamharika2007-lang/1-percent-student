@@ -2,6 +2,7 @@
 // 1% STUDENT - INTERACTIVE APP ENGINE
 // ==========================================
 
+
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initHabits();
@@ -9,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNotes();
     initPlatforms();
     initNav();
+    initAuth();
 });
 
 // ------------------------------------------
@@ -425,11 +427,10 @@ function saveCurrentNote() {
         code,
         date: new Date().toLocaleDateString()
     };
-
     notesList.unshift(newNote);
     saveNotesToStorage();
-    renderNotes();
 
+    renderNotes();
     titleInput.value = '';
     tagInput.value = '';
     contentInput.value = '';
@@ -700,8 +701,19 @@ function renderPlatforms() {
     container.innerHTML = '';
 
     const allPlatforms = [...DEFAULT_PLATFORMS, ...customBookmarks];
+    let connections = {};
+    try {
+        const connectionsStr = localStorage.getItem('1percent_platform_connections');
+        if (connectionsStr) connections = JSON.parse(connectionsStr);
+    } catch (e) {
+        console.error("Error parsing connections", e);
+    }
 
     allPlatforms.forEach(p => {
+        const conn = connections[p.id];
+        const isConnected = !!conn;
+        const profileUrl = conn ? conn.url : p.url;
+
         const card = document.createElement('div');
         card.className = 'platform-card';
         card.dataset.name = p.name;
@@ -715,9 +727,19 @@ function renderPlatforms() {
             </div>
             <h3 class="platform-title">${escapeHtml(p.name)}</h3>
             <p class="platform-desc">${escapeHtml(p.desc)}</p>
+            
+            <div style="margin-bottom: 12px; font-size: 13px;">
+                ${isConnected ? 
+                    `<div style="color: var(--accent-green); font-weight: 600; margin-bottom: 4px;">✓ Connected as <span style="color: var(--text-main); font-weight:500;">${escapeHtml(conn.username)}</span></div>` : 
+                    `<div style="color: var(--text-muted); font-weight: 600; margin-bottom: 4px;">Not Connected</div>`
+                }
+            </div>
+            
             <div class="platform-actions">
-                <a href="${p.url}" target="_blank" class="platform-link-btn">Launch ↗</a>
-                ${p.quickLinkUrl ? `<a href="${p.quickLinkUrl}" target="_blank" class="quick-link-btn">${escapeHtml(p.quickLinkText)}</a>` : ''}
+                <a href="${profileUrl}" target="_blank" class="platform-link-btn">Visit Profile ↗</a>
+                <button class="quick-link-btn" onclick="openConnectModal('${p.id}', '${escapeHtml(p.name)}')">
+                    ${isConnected ? 'Edit' : 'Connect'}
+                </button>
             </div>
         `;
         container.appendChild(card);
@@ -725,6 +747,72 @@ function renderPlatforms() {
 
     filterPlatforms();
 }
+
+window.openConnectModal = function(id, name) {
+    const modal = document.getElementById('connectPlatformModal');
+    if (!modal) return;
+    
+    const currentUserStr = localStorage.getItem('1percent_current_user');
+    if (!currentUserStr) {
+        alert("Please login to save your coding profiles!");
+        document.getElementById('loginBtn').click();
+        return;
+    }
+
+    const title = document.getElementById('connectPlatformTitle');
+    const idInput = document.getElementById('connectPlatformId');
+    const userInput = document.getElementById('connectUsername');
+    const urlInput = document.getElementById('connectUrl');
+
+    title.textContent = `Connect ${name}`;
+    idInput.value = id;
+
+    let connections = {};
+    try {
+        const connectionsStr = localStorage.getItem('1percent_platform_connections');
+        if (connectionsStr) connections = JSON.parse(connectionsStr);
+    } catch (e) {}
+    const conn = connections[id];
+
+    userInput.value = conn ? conn.username : '';
+    urlInput.value = conn ? conn.url : '';
+
+    modal.classList.add('open');
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const saveConnectBtn = document.getElementById('saveConnectBtn');
+    if (saveConnectBtn) {
+        saveConnectBtn.addEventListener('click', () => {
+            const id = document.getElementById('connectPlatformId').value;
+            const username = document.getElementById('connectUsername').value.trim();
+            let url = document.getElementById('connectUrl').value.trim();
+
+            if (!username || !url) {
+                alert('Please provide both username and profile URL.');
+                return;
+            }
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+
+            let connections = {};
+            try {
+                const connectionsStr = localStorage.getItem('1percent_platform_connections');
+                if (connectionsStr) connections = JSON.parse(connectionsStr);
+            } catch (e) {}
+
+            connections[id] = { username, url };
+            
+            // Save local first for fast feedback
+            localStorage.setItem('1percent_platform_connections', JSON.stringify(connections));
+
+            document.getElementById('connectPlatformModal').classList.remove('open');
+            renderPlatforms();
+        });
+    }
+});
 
 window.deleteCustomBookmark = function (id) {
     customBookmarks = customBookmarks.filter(b => b.id !== id);
@@ -759,4 +847,158 @@ function escapeHtml(str) {
             "'": '&#039;'
         }[m];
     });
+}
+
+// ------------------------------------------
+// 7. AUTHENTICATION & LOGIN LOGIC
+// ------------------------------------------
+let authMode = 'signup'; // 'login' or 'signup'
+
+function initAuth() {
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const authModal = document.getElementById('authModal');
+    const closeAuthBtn = document.getElementById('closeAuthModalBtn');
+    const toggleLink = document.getElementById('authToggleLink');
+    
+    checkLoginState();
+
+    if (loginBtn && authModal) {
+        loginBtn.addEventListener('click', () => {
+            setAuthMode('login');
+            authModal.classList.add('open');
+        });
+    }
+
+    if (signupBtn && authModal) {
+        signupBtn.addEventListener('click', () => {
+            setAuthMode('signup');
+            authModal.classList.add('open');
+        });
+    }
+    
+    if (toggleLink) {
+        toggleLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            setAuthMode(authMode === 'login' ? 'signup' : 'login');
+        });
+    }
+
+    if (closeAuthBtn && authModal) {
+        closeAuthBtn.addEventListener('click', () => authModal.classList.remove('open'));
+    }
+    
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('1percent_current_user');
+            checkLoginState();
+            // Reset habit data on logout
+            window.habitState = { lastDate: new Date().toISOString().split('T')[0], streak: 1, habits: [...DEFAULT_HABITS] };
+            saveHabitData(window.habitState);
+            renderHabits();
+            updateHabitStats();
+        });
+    }
+
+    const togglePwdBtns = document.querySelectorAll('.toggle-password-btn');
+    togglePwdBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            if (input) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    btn.textContent = '🙈';
+                } else {
+                    input.type = 'password';
+                    btn.textContent = '👁️';
+                }
+            }
+        });
+    });
+}
+
+function setAuthMode(mode) {
+    authMode = mode;
+    const title = document.getElementById('authModalTitle');
+    const fullNameGroup = document.getElementById('fullNameGroup');
+    const confirmPasswordGroup = document.getElementById('confirmPasswordGroup');
+    const forgotPasswordGroup = document.getElementById('forgotPasswordGroup');
+    const submitBtn = document.getElementById('authSubmitBtn');
+    const toggleText = document.getElementById('authToggleText');
+    const toggleLink = document.getElementById('authToggleLink');
+    const fullNameInput = document.getElementById('authFullName');
+    const confirmPwdInput = document.getElementById('authConfirmPassword');
+
+    if (mode === 'login') {
+        if(title) title.textContent = 'Login';
+        if(fullNameGroup) fullNameGroup.style.display = 'none';
+        if(confirmPasswordGroup) confirmPasswordGroup.style.display = 'none';
+        if(forgotPasswordGroup) forgotPasswordGroup.style.display = 'block';
+        if(submitBtn) submitBtn.textContent = 'Login';
+        if(toggleText) toggleText.textContent = "Don't have an account?";
+        if(toggleLink) toggleLink.textContent = "Sign Up";
+        
+        fullNameInput.removeAttribute('required');
+        confirmPwdInput.removeAttribute('required');
+    } else {
+        if(title) title.textContent = 'Sign Up';
+        if(fullNameGroup) fullNameGroup.style.display = 'block';
+        if(confirmPasswordGroup) confirmPasswordGroup.style.display = 'block';
+        if(forgotPasswordGroup) forgotPasswordGroup.style.display = 'none';
+        if(submitBtn) submitBtn.textContent = 'Create Account';
+        if(toggleText) toggleText.textContent = "Already have an account?";
+        if(toggleLink) toggleLink.textContent = "Login";
+        
+        fullNameInput.setAttribute('required', 'true');
+        confirmPwdInput.setAttribute('required', 'true');
+    }
+}
+
+window.submitAuth = function() {
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value;
+    
+    if (authMode === 'signup') {
+        const fullName = document.getElementById('authFullName').value.trim();
+        const confirmPassword = document.getElementById('authConfirmPassword').value;
+        
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+        
+        // Mock save user
+        const user = { name: fullName, email: email };
+        localStorage.setItem('1percent_current_user', JSON.stringify(user));
+        alert("Account created successfully!");
+    } else {
+        // Mock login check
+        if(email === '' || password === '') return;
+        const user = { name: email.split('@')[0], email: email };
+        localStorage.setItem('1percent_current_user', JSON.stringify(user));
+    }
+    
+    document.getElementById('authModal').classList.remove('open');
+    document.getElementById('authForm').reset();
+    checkLoginState();
+}
+
+function checkLoginState() {
+    const authButtons = document.getElementById('authButtons');
+    const userProfile = document.getElementById('userProfile');
+    const welcomeText = document.getElementById('welcomeText');
+    
+    const currentUserStr = localStorage.getItem('1percent_current_user');
+    
+    if (currentUserStr) {
+        const user = JSON.parse(currentUserStr);
+        if(authButtons) authButtons.style.display = 'none';
+        if(userProfile) userProfile.style.display = 'flex';
+        if(welcomeText) welcomeText.textContent = `Welcome, ${escapeHtml(user.name)}`;
+    } else {
+        if(authButtons) authButtons.style.display = 'flex';
+        if(userProfile) userProfile.style.display = 'none';
+    }
 }
