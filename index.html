@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1% Student | Daily Coding & Habit Dashboard</title>
-    <meta name="description" content="One simple dashboard to grow 1% every day in coding. Practice DSA, track study habits, focus with Pomodoro, save code snippets, and access all coding platforms.">
+    <meta name="description"
+        content="One simple dashboard to grow 1% every day in coding. Practice DSA, track study habits, focus with Pomodoro, save code snippets, and access all coding platforms.">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body data-theme="dark">
 
     <!-- HEADER & NAVIGATION -->
@@ -29,14 +32,16 @@
                 <span id="themeIcon">☀️</span>
             </button>
             <div id="authButtons" style="display: flex;">
-                <button class="btn-secondary" id="loginBtn" style="padding: 8px 18px; font-size: 14px; margin-right: 10px;">Login</button>
+                <button class="btn-secondary" id="loginBtn"
+                    style="padding: 8px 18px; font-size: 14px; margin-right: 10px;">Login</button>
                 <button class="btn-primary" id="signupBtn" style="padding: 8px 18px; font-size: 14px;">Sign Up</button>
             </div>
             <div id="userProfile" style="display: none; align-items: center; gap: 10px;">
                 <span id="welcomeText" style="font-weight: 600;">Welcome, User</span>
                 <button class="btn-secondary" id="logoutBtn" style="padding: 8px 18px; font-size: 14px;">Logout</button>
             </div>
-            <a href="#dashboard" class="btn-primary" style="padding: 8px 18px; font-size: 14px; margin-left: 10px;">Today's Goal</a>
+            <a href="#dashboard" class="btn-primary"
+                style="padding: 8px 18px; font-size: 14px; margin-left: 10px;">Today's Goal</a>
         </div>
     </header>
 
@@ -51,13 +56,16 @@
                 <span class="gradient-text">1% Every Single Day 🚀</span>
             </h1>
             <p>
-                Your all-in-one developer workspace. Track daily coding habits, power through Pomodoro focus sprints, organize essential code snippets, and launch top competitive platforms in one click.
+                Your all-in-one developer workspace. Track daily coding habits, power through Pomodoro focus sprints,
+                organize essential code snippets, and launch top competitive platforms in one click.
             </p>
             <div class="hero-buttons">
-                <button onclick="document.getElementById('dashboard').scrollIntoView({behavior:'smooth'})" class="btn-primary">
+                <button onclick="document.getElementById('dashboard').scrollIntoView({behavior:'smooth'})"
+                    class="btn-primary">
                     Start Today's 1% 🎯
                 </button>
-                <button onclick="document.getElementById('platforms').scrollIntoView({behavior:'smooth'})" class="btn-secondary">
+                <button onclick="document.getElementById('platforms').scrollIntoView({behavior:'smooth'})"
+                    class="btn-secondary">
                     Explore Platforms 💻
                 </button>
             </div>
@@ -85,7 +93,7 @@
         </div>
 
         <div class="dashboard-grid">
-            
+
             <!-- WIDGET 1: HABIT TRACKER -->
             <div class="dashboard-widget">
                 <div class="widget-header">
@@ -120,7 +128,8 @@
                     <button class="btn-icon" id="addHabitBtn">Add</button>
                 </div>
                 <div style="text-align: right; margin-top: 10px;">
-                    <button id="resetHabitsBtn" style="background:none; border:none; color:var(--text-muted); font-size:12px; cursor:pointer; text-decoration:underline;">
+                    <button id="resetHabitsBtn"
+                        style="background:none; border:none; color:var(--text-muted); font-size:12px; cursor:pointer; text-decoration:underline;">
                         Reset today's progress
                     </button>
                 </div>
@@ -162,7 +171,8 @@
     <section id="notes" class="notes-section">
         <div class="section-header">
             <h2 class="section-title">📝 Quick Code Snippets & Notes</h2>
-            <p class="section-desc">Save frequently used templates, commands, and study notes locally for quick copy-paste</p>
+            <p class="section-desc">Save frequently used templates, commands, and study notes locally for quick
+                copy-paste</p>
         </div>
 
         <div class="notes-grid">
@@ -178,7 +188,9 @@
 
             <div>
                 <div style="margin-bottom: 20px;">
-                    <input type="text" id="noteSearchInput" placeholder="🔍 Search saved snippets by title, tag, or content..." class="search-input" style="max-width: 100%;">
+                    <input type="text" id="noteSearchInput"
+                        placeholder="🔍 Search saved snippets by title, tag, or content..." class="search-input"
+                        style="max-width: 100%;">
                 </div>
 
                 <div class="notes-container" id="notesContainer">
@@ -198,7 +210,8 @@
         <div class="platform-controls">
             <div class="search-box-wrapper">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="searchBox" placeholder="Search coding platforms or bookmarks..." class="search-input">
+                <input type="text" id="searchBox" placeholder="Search coding platforms or bookmarks..."
+                    class="search-input">
             </div>
 
             <div class="category-pills">
@@ -228,11 +241,13 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Platform Name</label>
+                    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Platform
+                        Name</label>
                     <input type="text" id="bmName" placeholder="e.g. My Portfolio / CodePen">
                 </div>
                 <div>
-                    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Website URL</label>
+                    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Website
+                        URL</label>
                     <input type="url" id="bmUrl" placeholder="https://example.com">
                 </div>
                 <div>
@@ -244,7 +259,8 @@
                         <option value="docs">Docs & References</option>
                     </select>
                 </div>
-                <button class="btn-primary" id="saveBookmarkBtn" style="width: 100%; justify-content: center; margin-top: 10px;">
+                <button class="btn-primary" id="saveBookmarkBtn"
+                    style="width: 100%; justify-content: center; margin-top: 10px;">
                     Save Bookmark
                 </button>
             </div>
@@ -256,7 +272,8 @@
         <div class="modal-content" style="max-width: 400px;">
             <div class="modal-header">
                 <h3 id="connectPlatformTitle">Connect Platform</h3>
-                <button class="close-modal-btn" onclick="document.getElementById('connectPlatformModal').classList.remove('open')">&times;</button>
+                <button class="close-modal-btn"
+                    onclick="document.getElementById('connectPlatformModal').classList.remove('open')">&times;</button>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="connectPlatformId">
@@ -265,10 +282,12 @@
                     <input type="text" id="connectUsername" placeholder="e.g. john_doe">
                 </div>
                 <div style="margin-top: 10px;">
-                    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Profile URL</label>
+                    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Profile
+                        URL</label>
                     <input type="url" id="connectUrl" placeholder="https://leetcode.com/john_doe">
                 </div>
-                <button class="btn-primary" id="saveConnectBtn" style="width: 100%; justify-content: center; margin-top: 15px;">
+                <button class="btn-primary" id="saveConnectBtn"
+                    style="width: 100%; justify-content: center; margin-top: 15px;">
                     Save Profile
                 </button>
             </div>
@@ -285,7 +304,8 @@
             <div class="modal-body">
                 <form id="authForm" onsubmit="event.preventDefault(); submitAuth();">
                     <div id="fullNameGroup">
-                        <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Full Name</label>
+                        <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Full
+                            Name</label>
                         <input type="text" id="authFullName" placeholder="e.g. John Doe">
                     </div>
                     <div style="margin-top: 10px;">
@@ -293,26 +313,33 @@
                         <input type="email" id="authEmail" placeholder="student@example.com" required>
                     </div>
                     <div style="margin-top: 10px; position: relative;">
-                        <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Password</label>
-                        <input type="password" id="authPassword" placeholder="••••••••" required style="padding-right: 36px;">
-                        <button type="button" class="toggle-password-btn" data-target="authPassword" style="position: absolute; right: 10px; top: 28px; background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0;">👁️</button>
+                        <label
+                            style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Password</label>
+                        <input type="password" id="authPassword" placeholder="••••••••" required
+                            style="padding-right: 36px;">
+                        <button type="button" class="toggle-password-btn" data-target="authPassword"
+                            style="position: absolute; right: 10px; top: 28px; background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0;">👁️</button>
                     </div>
                     <div id="confirmPasswordGroup" style="margin-top: 10px; position: relative;">
-                        <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Confirm Password</label>
-                        <input type="password" id="authConfirmPassword" placeholder="••••••••" style="padding-right: 36px;">
-                        <button type="button" class="toggle-password-btn" data-target="authConfirmPassword" style="position: absolute; right: 10px; top: 28px; background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0;">👁️</button>
+                        <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">Confirm
+                            Password</label>
+                        <input type="password" id="authConfirmPassword" placeholder="••••••••"
+                            style="padding-right: 36px;">
+                        <button type="button" class="toggle-password-btn" data-target="authConfirmPassword"
+                            style="position: absolute; right: 10px; top: 28px; background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0;">👁️</button>
                     </div>
-                    
+
                     <div id="forgotPasswordGroup" style="margin-top: 10px; display: none; text-align: right;">
                         <a href="#" style="font-size: 12px; color: var(--primary);">Forgot Password?</a>
                     </div>
 
-                    <button type="submit" class="btn-primary" id="authSubmitBtn" style="width: 100%; justify-content: center; margin-top: 20px;">
+                    <button type="submit" class="btn-primary" id="authSubmitBtn"
+                        style="width: 100%; justify-content: center; margin-top: 20px;">
                         Create Account
                     </button>
-                    
+
                     <div style="margin-top: 15px; text-align: center; font-size: 13px;">
-                        <span id="authToggleText">Already have an account?</span> 
+                        <span id="authToggleText">Already have an account?</span>
                         <a href="#" id="authToggleLink" style="color: var(--primary); font-weight: 600;">Login</a>
                     </div>
                 </form>
@@ -325,8 +352,10 @@
         <div class="about-card">
             <h2 style="font-size: 30px; font-weight: 800; margin-bottom: 16px;">About 1% Student 🌱</h2>
             <p style="color: var(--text-muted); font-size: 16px; line-height: 1.8; margin-bottom: 24px;">
-                The 1% rule states that improving by just 1% every single day results in a 37x improvement over the course of a year. 
-                1% Student brings all your coding daily habits, focus tools, code snippets, and platform links into one clean, distraction-free dashboard.
+                The 1% rule states that improving by just 1% every single day results in a 37x improvement over the
+                course of a year.
+                1% Student brings all your coding daily habits, focus tools, code snippets, and platform links into one
+                clean, distraction-free dashboard.
             </p>
             <div style="font-size: 18px; font-weight: 700; color: var(--primary);">
                 One Tab. Daily Growth. Zero Distractions.
@@ -340,6 +369,7 @@
     </footer>
 
     <!-- SCRIPT -->
-    <script src="script.js"></script>
+    <script type="module" src="/script.js"></script>
 </body>
+
 </html>
